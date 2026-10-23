@@ -57,4 +57,9 @@ void PlatformSetInputLayout(Handedness handedness);
 void PlatformInputUpdate(void);
 void PlatformInputSetRepeat(int delay, int rate_delay);
 
+#ifdef NT_PLATFORM_3DS
+bool PlatformIsNew3DS(void);
+const char *PlatformGetModelName(void);
+#endif
+
 #endif

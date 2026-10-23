@@ -5280,6 +5280,17 @@ int main(int argc, char *argv[])
 
 	settings = new Settings(launch_path, fat_success);
 
+#ifdef NT_PLATFORM_3DS
+	settings->setNew3DS(PlatformIsNew3DS());
+	if (settings->getNew3DS()) {
+		// Faster CPU on New 3DS: default to 47 kHz output.
+		settings->setFreq47kHz(true);
+#ifndef NT_PLATFORM_NDS
+		CommandSetPlaybackFrequency(NTXMSOUND_SAMPLE_RATE_47K);
+#endif
+	}
+#endif
+
 	last_themepath[SETTINGS_FILENAME_LEN] = '\0';
 	state = new State();
 

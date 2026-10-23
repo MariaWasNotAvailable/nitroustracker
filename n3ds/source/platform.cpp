@@ -27,6 +27,9 @@ bool PlatformInitFilesystem(void)
 bool PlatformInit(int argc, char *argv[])
 {
 	romfsInit();
+	APT_CheckNew3DS(&platform_is_new3ds);
+	platform_model_name =
+	    platform_is_new3ds ? "New Nintendo 3DS" : "Nintendo 3DS";
 	if (!PlatformVideoInit())
 		return false;
 	return true;
@@ -48,6 +51,19 @@ PlatformKeyMask PlatformKey_START = KEY_START, PlatformKey_SELECT = KEY_SELECT,
 PlatformKeyMask PlatformKeysHeld, PlatformKeysDown, PlatformKeysUp;
 u16 PlatformTouchX, PlatformTouchY;
 u8 PlatformTouchScreen = TOUCH_SCREEN_BOTTOM;
+
+static bool platform_is_new3ds = false;
+static const char *platform_model_name = "Nintendo 3DS";
+
+bool PlatformIsNew3DS(void)
+{
+	return platform_is_new3ds;
+}
+
+const char *PlatformGetModelName(void)
+{
+	return platform_model_name;
+}
 
 static PlatformKeyMask keys_that_are_repeated =
     KEY_UP | KEY_DOWN | KEY_LEFT | KEY_RIGHT;

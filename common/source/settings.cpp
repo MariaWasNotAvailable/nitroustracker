@@ -41,7 +41,8 @@
 
 Settings::Settings(char *launch_path, bool use_fat)
     : handedness(RIGHT_HANDED), sample_preview(true), stereo_output(true),
-      freq_47khz(false), lines_per_beat(8), fat(use_fat), changed(false)
+      freq_47khz(false), new3ds(false), lines_per_beat(8), fat(use_fat),
+      changed(false)
 {
 	if (launch_path != NULL) {
 #if defined(NT_PLATFORM_NDS) || defined(NT_PLATFORM_3DS)
@@ -113,6 +114,9 @@ Settings::Settings(char *launch_path, bool use_fat)
 			getConfigValue(confstr, "47kHz Output", prevstring, 20, "False");
 			freq_47khz = stringToBool(prevstring);
 
+			getConfigValue(confstr, "New 3DS", prevstring, 20, "False");
+			new3ds = stringToBool(prevstring);
+
 			getConfigValue(confstr, "Lines Per Beat", prevstring, 20, "8");
 			lines_per_beat = strtoul(prevstring, NULL, 10);
 			if (!lines_per_beat || lines_per_beat > 64)
@@ -166,6 +170,17 @@ bool Settings::getFreq47kHz(void)
 void Settings::setFreq47kHz(bool freq_47khz_)
 {
 	freq_47khz = freq_47khz_;
+	changed = true;
+}
+
+bool Settings::getNew3DS(void)
+{
+	return new3ds;
+}
+
+void Settings::setNew3DS(bool new3ds_)
+{
+	new3ds = new3ds_;
 	changed = true;
 }
 
@@ -270,17 +285,19 @@ bool Settings::write(void)
 		return false;
 	}
 
-	char hstring[20], prevstring[20], stereostring[20], freqstring[20];
+	char hstring[20], prevstring[20], stereostring[20], freqstring[20],
+	    new3dsstring[20];
 	handednessToString(hstring);
 	boolToString(sample_preview, prevstring);
 	boolToString(stereo_output, stereostring);
 	boolToString(freq_47khz, freqstring);
+	boolToString(new3ds, new3dsstring);
 	fprintf(conf,
 	        "Samplepath = %s\nSongpath = %s\nThemepath = %s\nHandedness = "
 	        "%s\nSample Preview = %s\nStereo Output = %s\n47kHz Output = "
-	        "%s\nLines Per Beat = %d\n",
+	        "%s\nNew 3DS = %s\nLines Per Beat = %d\n",
 	        samplepath, songpath, themepath, hstring, prevstring, stereostring,
-	        freqstring, lines_per_beat);
+	        freqstring, new3dsstring, lines_per_beat);
 	fclose(conf);
 	return true;
 }

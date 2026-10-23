@@ -67,6 +67,9 @@ public:
 	bool getFreq47kHz(void);
 	void setFreq47kHz(bool freq_47khz_);
 
+	bool getNew3DS(void);
+	void setNew3DS(bool new3ds_);
+
 	u8 getLinesPerBeat(void);
 	void setLinesPerBeat(u8 lines_per_beat_);
 
@@ -105,6 +108,7 @@ private:
 	bool sample_preview;
 	bool stereo_output;
 	bool freq_47khz;
+	bool new3ds;
 	u8 lines_per_beat;
 	tobkit::Theme *theme;
 	char configpath[SETTINGS_FILENAME_LEN];
